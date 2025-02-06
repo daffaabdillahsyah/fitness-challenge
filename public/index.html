@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Challenge App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding-top: 80px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar {
+            background: linear-gradient(to right, #2c3e50, #3498db) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: rgba(255, 255, 255, 0.95);
+            overflow: hidden;
+            height: 100%;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .profile-card {
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+        }
+        .profile-card .card-title {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        .profile-stats {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.3rem;
+        }
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .active-section {
+            margin-top: 2rem;
+        }
+        .active-section h3 {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .quest-card, .challenge-card {
+            border: none;
+            border-radius: 15px;
+            margin-bottom: 1rem;
+            background: white;
+        }
+        .quest-card .card-body, .challenge-card .card-body {
+            padding: 1.5rem;
+        }
+        .badge {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            border-radius: 50px;
+            margin-right: 0.5rem;
+        }
+        .badge.bg-primary {
+            background: linear-gradient(to right, #3498db, #2980b9) !important;
+        }
+        .badge.bg-success {
+            background: linear-gradient(to right, #27ae60, #2ecc71) !important;
+        }
+        .badge.bg-warning {
+            background: linear-gradient(to right, #f39c12, #f1c40f) !important;
+            color: #2c3e50;
+        }
+        .badge.bg-danger {
+            background: linear-gradient(to right, #e74c3c, #c0392b) !important;
+        }
+        footer {
+            margin-top: auto;
+            background: linear-gradient(to right, #2c3e50, #3498db) !important;
+            padding: 1.5rem 0;
+        }
+        .btn-outline-light:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        .btn-primary {
+            background: linear-gradient(to right, #3498db, #2980b9);
+            border: none;
+            transition: transform 0.2s ease;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(to right, #2980b9, #2c3e50);
+        }
+        .progress {
+            height: 0.8rem;
+            border-radius: 50px;
+            background: rgba(0,0,0,0.1);
+            margin-top: 0.5rem;
+        }
+        .progress-bar {
+            background: linear-gradient(to right, #27ae60, #2ecc71);
+            border-radius: 50px;
+        }
+        .welcome-section {
+            text-align: center;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        .welcome-section h1 {
+            color: #2c3e50;
+            font-weight: 800;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .welcome-section p {
+            color: #666;
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .rating i {
+            color: #ddd;
+            cursor: pointer;
+            font-size: 1.5rem;
+            margin-right: 5px;
+        }
+        .rating i:hover {
+            color: gold;
+        }
+        .rating i.active {
+            color: gold;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow">
+    <div class="container">
+        <!-- Centered Brand -->
+        <a class="navbar-brand mx-auto fw-bold" href="#">Fitness Challenge</a>
+        
+        <!-- Navbar Toggler for Mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapsible Navbar Content -->
+        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+            <!-- Left Aligned Links -->
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="challenge.html">Challenges</a></li>
+                <li class="nav-item"><a class="nav-link" href="quest.html">Quests</a></li>
+                <li class="nav-item"><a class="nav-link" href="inventory.html">Inventory</a></li>
+                <li class="nav-item"><a class="nav-link" href="review.html">Reviews</a></li>
+                <li class="nav-item"><a class="nav-link" href="leaderboard.html">Leaderboard</a></li>
+            </ul>
+
+            <!-- Right Aligned Authentication Links -->
+            <ul class="navbar-nav">
+                <li class="nav-item"><a id="logoutButton" href="logout.html" class="nav-link d-none">Logout</a></li>
+                <li class="nav-item"><a id="loginButton" href="login.html" class="btn btn-outline-light btn-sm px-3">Login</a></li>
+                <li class="nav-item">
+                    <a id="registerButton" class="btn btn-primary btn-sm px-3 ms-2" href="register.html">Register</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<!-- Main Container -->
+<div class="container mt-4">
+    <div class="row">
+        <!-- User Profile -->
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h4 class="text-center">User Profile</h4>
+                <p><strong>Username:</strong> <span id="username">-</span></p>
+                <p><strong>Level:</strong> <span id="level">-</span></p>
+                <p><strong>Skill Points:</strong> <span id="skillPoints">-</span></p>
+                <p><strong>Experience:</strong> <span id="xp">-</span></p>
+            </div>
+        </div>
+
+        <!-- Challenges Section -->
+        <div class="col-md-8">
+            <h3 class="mb-3">Ongoing Challenges</h3>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8" class="card-img-top" alt="10k Steps Challenge">
+                        <div class="card-body">
+                            <h5>10k Steps Challenge</h5>
+                            <p>Walk 10,000 steps daily for 7 days.</p>
+                            <p><strong>Skill Points:</strong> 100</p>
+                            <button class="btn btn-primary w-100" onclick="joinChallenge(1, 100, '10k Steps Challenge')" data-challenge-id="1">Join Now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211" class="card-img-top" alt="Marathon Training">
+                        <div class="card-body">
+                            <h5>Marathon Training</h5>
+                            <p>Train daily for an upcoming marathon.</p>
+                            <p><strong>Skill Points:</strong> 500</p>
+                            <button class="btn btn-primary w-100" onclick="joinChallenge(2, 500, 'Marathon Training')" data-challenge-id="2">Join Now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b" class="card-img-top" alt="30 Days Yoga Journey">
+                        <div class="card-body">
+                            <h5>30 Days Yoga Journey</h5>
+                            <p>Practice yoga daily for 30 days.</p>
+                            <p><strong>Skill Points:</strong> 300</p>
+                            <button class="btn btn-primary w-100" onclick="joinChallenge(3, 300, '30 Days Yoga Journey')" data-challenge-id="3">Join Now</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48" class="card-img-top" alt="Strength Training Master">
+                        <div class="card-body">
+                            <h5>Strength Training Master</h5>
+                            <p>Complete 20 strength training sessions.</p>
+                            <p><strong>Skill Points:</strong> 400</p>
+                            <button class="btn btn-primary w-100" onclick="joinChallenge(4, 400, 'Strength Training Master')" data-challenge-id="4">Join Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quests & Inventory Section -->
+    <div class="row mt-4">
+        <!-- Quests -->
+        <div class="col-md-6">
+            <h3>Quests</h3>
+            <div class="row" id="questList">
+                <!-- Quest items will be dynamically added here -->
+            </div>
+        </div>
+
+        <!-- Inventory -->
+        <div class="col-md-6">
+            <h3>Inventory</h3>
+            <ul class="list-group" id="inventoryList">
+                <li class="list-group-item">🧃 Energy Drink <span class="badge bg-info">2</span></li>
+                <li class="list-group-item">👟 Running Shoes <span class="badge bg-secondary">1</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="row mt-4">
+        <div class="col-md-8 offset-md-2">
+            <h3>Your Review</h3>
+            <div id="existingReview">
+                <!-- Existing review will be shown here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light text-center py-3 mt-5">
+        <p>© 2024 Fitness Challenge | All rights reserved.</p>
+    </footer>
+</div>
+
+<!-- Login Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email" class="form-control" id="email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password:</label>
+                        <input type="password" class="form-control" id="password">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/queryCmds.js" type="text/javascript"></script>
+<script src="js/getCurrentURL.js" type="text/javascript"></script>
+<script src="js/userNavbarToggle.js" type="text/javascript"></script>
+
+<script>
+function updateInventoryDisplay() {
+    const token = localStorage.getItem('token');
+    if (token) {
+        fetchMethod(`${currentUrl}/api/inventory`, (status, response) => {
+            if (status === 200) {
+                const inventoryContainer = document.getElementById('inventoryList');
+                if (inventoryContainer) {
+                    inventoryContainer.innerHTML = ''; // Clear existing items
+                    if (response && response.length > 0) {
+                        response.forEach(item => {
+                            const itemHtml = `
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    ${getItemEmoji(item.type)} ${item.name}
+                                    <span class="badge bg-info rounded-pill">${item.quantity}</span>
+                                </li>
+                            `;
+                            inventoryContainer.innerHTML += itemHtml;
+                        });
+                    } else {
+                        inventoryContainer.innerHTML = '<li class="list-group-item">No items in inventory</li>';
+                    }
+                }
+            } else {
+                console.error('Error fetching inventory:', response);
+            }
+        }, 'GET', null, token);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('token');
+    if (token) {
+        // Fetch user profile data
+        fetchMethod(`${currentUrl}/api/user/profile`, (status, response) => {
+            if (status === 200) {
+                console.log("User profile fetched successfully:", response);
+                document.getElementById('username').textContent = response.username;
+                document.getElementById('level').textContent = response.level;
+                document.getElementById('skillPoints').textContent = response.skill_points;
+                document.getElementById('xp').textContent = `${response.experience_points} XP`;
+                
+                // Update inventory display
+                updateInventoryDisplay();
+            } else {
+                console.error('Error fetching profile:', response);
+            }
+        }, 'GET', null, token);
+    }
+});
+</script>
+
+<script>
+// Helper function to get item emoji
+function getItemEmoji(type) {
+    switch (type.toLowerCase()) {
+        case 'consumable': return '🧃';
+        case 'equipment': return '👟';
+        case 'trophy': return '🏆';
+        default: return '📦';
+    }
+}
+</script>
+
+<script>
+// Helper function to get quest emoji and image
+function getQuestEmoji(type) {
+    if (!type) return '📋';
+    
+    switch (type.toLowerCase()) {
+        case 'easy': return '🏋️';
+        case 'medium': return '🏃';
+        case 'hard': return '🏊';
+        default: return '📋';
+    }
+}
+
+// Function to update quest display
+function updateQuestDisplay() {
+    const token = localStorage.getItem('token');
+    if (token) {
+        fetchMethod(`${currentUrl}/api/quests/active`, (status, response) => {
+            if (status === 200) {
+                console.log('Active quests response:', response); // Debug log
+                const questContainer = document.getElementById('questList');
+                if (questContainer) {
+                    questContainer.innerHTML = ''; // Clear existing quests
+                    if (response && response.length > 0) {
+                        response.forEach(quest => {
+                            const completeButton = quest.status === 'in_progress' ? 
+                                `<button class="btn btn-success btn-sm" onclick="completeQuest(${quest.id})">Complete</button>` : '';
+                            
+                            const statusBadge = quest.status === 'completed' ? 
+                                '<span class="badge bg-success">Completed</span>' :
+                                '<span class="badge bg-warning">In Progress</span>';
+
+                            // Extract image URL from description if present
+                            const descriptionParts = quest.description.split('\nImage: ');
+                            const description = descriptionParts[0];
+                            const imageUrl = descriptionParts[1] || '';
+
+                            const questHtml = `
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100">
+                                        ${imageUrl ? `<img src="${imageUrl}" class="card-img-top" alt="${quest.title}">` : ''}
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                ${getQuestEmoji(quest.type)} ${quest.title}
+                                            </h5>
+                                            <p class="card-text">${description}</p>
+                                            <p class="card-text"><small class="text-muted">Reward: ${quest.points} Skill Points</small></p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                ${statusBadge}
+                                                ${completeButton}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                            questContainer.innerHTML += questHtml;
+                        });
+                    } else {
+                        questContainer.innerHTML = '<div class="col-12"><div class="alert alert-info">No active quests</div></div>';
+                    }
+                } else {
+                    console.error('Quest container not found');
+                }
+            } else {
+                console.error('Error fetching quests:', response);
+                if (questContainer) {
+                    questContainer.innerHTML = '<div class="col-12"><div class="alert alert-danger">Error loading quests</div></div>';
+                }
+            }
+        }, 'GET', null, token);
+    }
+}
+
+// Function to complete a quest
+function completeQuest(questId) {
+    const token = localStorage.getItem('token');
+    if (token) {
+        fetchMethod(`${currentUrl}/api/quests/${questId}/complete`, (status, response) => {
+            if (status === 200) {
+                // Update quest display
+                updateQuestDisplay();
+                
+                // Update inventory in case rewards were given
+                updateInventoryDisplay();
+                
+                // Update user stats
+                document.getElementById('skillPoints').textContent = response.newSkillPoints;
+                document.getElementById('xp').textContent = `${response.newExperience} XP`;
+                
+                // Show success message
+                alert(`Quest completed! You earned ${response.skillPointsGained} Skill Points and ${response.experienceGained} XP!`);
+                
+                // Refresh profile data to update level
+                fetchMethod(`${currentUrl}/api/user/profile`, (status, profileResponse) => {
+                    if (status === 200) {
+                        document.getElementById('level').textContent = profileResponse.level;
+                    }
+                }, 'GET', null, token);
+            } else {
+                console.error('Error completing quest:', response);
+                alert('Failed to complete quest. Please try again.');
+            }
+        }, 'POST', null, token);
+    }
+}
+
+// Initial call when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('token');
+    if (token) {
+        // Update both inventory and quests
+        updateInventoryDisplay();
+        updateQuestDisplay();
+
+        // Set up periodic updates
+        setInterval(() => {
+            updateInventoryDisplay();
+            updateQuestDisplay();
+        }, 30000);
+    }
+});
+</script>
+
+<script>
+// Function to load user's existing review
+function loadUserReview() {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    fetchMethod(`${currentUrl}/api/reviews/user`, (status, response) => {
+        if (status === 200 && response.length > 0) {
+            const existingReview = document.getElementById('existingReview');
+            const latestReview = response[0]; // Get the most recent review
+
+            existingReview.innerHTML = `
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="mb-2">
+                            ${displayStars(latestReview.rating)}
+                        </div>
+                        <p class="card-text">${latestReview.comment || 'No comment provided.'}</p>
+                        <small class="text-muted">Posted on: ${new Date(latestReview.created_at).toLocaleDateString()}</small>
+                    </div>
+                </div>
+            `;
+        } else {
+            const existingReview = document.getElementById('existingReview');
+            existingReview.innerHTML = `
+                <div class="alert alert-info">
+                    You haven't submitted a review yet. Visit the <a href="review.html">Reviews</a> page to share your experience!
+                </div>
+            `;
+        }
+    }, 'GET', null, token);
+}
+
+// Helper function to display stars
+function displayStars(rating) {
+    return Array(5).fill(0).map((_, index) => 
+        `<i class="fas fa-star ${index < rating ? 'text-warning' : 'text-muted'}"></i>`
+    ).join('');
+}
+
+// Update the DOMContentLoaded event
+document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('token');
+    if (token) {
+        // Initial updates
+        updateInventoryDisplay();
+        updateQuestDisplay();
+        loadUserReview();
+        updateChallengeStatus();
+
+        // Set up periodic updates
+        setInterval(() => {
+            updateInventoryDisplay();
+            updateQuestDisplay();
+            loadUserReview();
+            updateChallengeStatus();
+        }, 30000);
+    }
+});
+</script>
+
+<script>
+// Function to handle joining challenges
+function joinChallenge(challengeId, points, challengeName) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('Please login to join challenges');
+        return;
+    }
+
+    fetchMethod(`${currentUrl}/api/challenges/${challengeId}/join`, (status, response) => {
+        if (status === 200) {
+            // Update user's stats
+            document.getElementById('skillPoints').textContent = response.newSkillPoints;
+            document.getElementById('xp').textContent = `${response.newExperience} XP`;
+            
+            // Disable the join button
+            const button = document.querySelector(`button[data-challenge-id="${challengeId}"]`);
+            if (button) {
+                button.disabled = true;
+                button.textContent = 'Joined';
+            }
+            
+            // Show success message with both skill points and XP gained
+            alert(`Successfully joined ${challengeName}! You earned ${points} Skill Points and ${response.experienceGained} XP!`);
+            
+            // Refresh profile data to ensure everything is up to date
+            fetchMethod(`${currentUrl}/api/user/profile`, (status, profileResponse) => {
+                if (status === 200) {
+                    document.getElementById('level').textContent = profileResponse.level;
+                    document.getElementById('skillPoints').textContent = profileResponse.skill_points;
+                    document.getElementById('xp').textContent = `${profileResponse.experience_points} XP`;
+                }
+            }, 'GET', null, token);
+        } else if (status === 409) {
+            alert('You have already joined this challenge');
+            // Update button state to show as joined
+            const button = document.querySelector(`button[data-challenge-id="${challengeId}"]`);
+            if (button) {
+                button.disabled = true;
+                button.textContent = 'Joined';
+            }
+        } else {
+            alert(response.message || 'Error joining challenge. Please try again.');
+        }
+    }, 'POST', null, token);
+}
+
+// Function to check and update challenge status
+function updateChallengeStatus() {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    fetchMethod(`${currentUrl}/api/challenges/user`, (status, response) => {
+        if (status === 200) {
+            // Update all challenge buttons based on user's joined challenges
+            const allButtons = document.querySelectorAll('button[data-challenge-id]');
+            allButtons.forEach(button => {
+                const challengeId = parseInt(button.getAttribute('data-challenge-id'));
+                const isJoined = response.some(challenge => challenge.id === challengeId);
+                if (isJoined) {
+                    button.disabled = true;
+                    button.textContent = 'Joined';
+                } else {
+                    button.disabled = false;
+                    button.textContent = 'Join Now';
+                }
+            });
+        }
+    }, 'GET', null, token);
+}
+
+// Update the DOMContentLoaded event
+document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('token');
+    if (token) {
+        // Initial updates
+        updateInventoryDisplay();
+        updateQuestDisplay();
+        loadUserReview();
+        updateChallengeStatus();
+
+        // Set up periodic updates
+        setInterval(() => {
+            updateInventoryDisplay();
+            updateQuestDisplay();
+            loadUserReview();
+            updateChallengeStatus();
+        }, 30000);
+    }
+});
+</script>
+
+</body>
+</html>

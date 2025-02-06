@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | Fitness Challenge</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+      body {
+        background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        padding-top: 80px;
+      }
+      .navbar {
+        background: linear-gradient(to right, #2c3e50, #3498db) !important;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+      .navbar-brand {
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: white;
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.95);
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        backdrop-filter: blur(10px);
+      }
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+      }
+      .card-title {
+        color: #2c3e50;
+        font-size: 2rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 2rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+      .form-label {
+        color: #2c3e50;
+        font-weight: 600;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.5rem;
+      }
+      .form-control {
+        border: none;
+        border-radius: 10px;
+        padding: 0.8rem;
+        background: #f8f9fa;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+      }
+      .form-control:focus {
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+        background: white;
+      }
+      .btn-primary {
+        background: linear-gradient(to right, #3498db, #2980b9);
+        border: none;
+        border-radius: 50px;
+        padding: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        background: linear-gradient(to right, #2980b9, #2c3e50);
+      }
+      .alert {
+        border: none;
+        border-radius: 10px;
+      }
+      .alert-danger {
+        background: rgba(231, 76, 60, 0.1);
+        color: #c0392b;
+      }
+      footer {
+        margin-top: auto;
+        background: linear-gradient(to right, #2c3e50, #3498db) !important;
+        padding: 1rem 0;
+        color: white;
+      }
+      .register-link {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+      .register-link:hover {
+        color: #2980b9;
+        text-decoration: underline;
+      }
+      .welcome-text {
+        text-align: center;
+        color: white;
+        margin-bottom: 2rem;
+      }
+      .welcome-text h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+      }
+      .welcome-text p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">Fitness Challenge</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="register.html">Register</a></li>
+            <li class="nav-item"><a class="nav-link active" href="login.html">Login</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="welcome-text">
+        <h1>Welcome Back!</h1>
+        <p>Continue your fitness journey and achieve your goals</p>
+      </div>
+    </div>
+    <div class="container d-flex justify-content-center">
+      <div class="card p-4 shadow-lg" style="width: 400px;">
+        <div class="card-body">
+          <h3 class="card-title">Login</h3>
+          <form id="loginForm">
+            <div class="mb-4">
+              <label for="username" class="form-label">Username</label>
+              <input type="text" id="username" class="form-control" required />
+            </div>
+            <div class="mb-4">
+              <label for="password" class="form-label">Password</label>
+              <input type="password" id="password" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary w-100 mb-3">Login</button>
+            <p class="text-center mb-0">
+              Don't have an account? <a href="register.html" class="register-link">Register</a>
+            </p>
+          </form>
+          <div id="loginFeedback" class="alert alert-danger d-none mt-3"></div>
+        </div>
+      </div>
+    </div>
+    <footer class="text-center py-3">
+      <p class="mb-0">© 2024 Fitness Challenge | All rights reserved.</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/queryCmds.js"></script>
+    <script src="js/getCurrentURL.js"></script>
+    <script src="js/userNavbarToggle.js"></script>
+    <script src="js/loginUser.js"></script>
+  </body>
+</html>
