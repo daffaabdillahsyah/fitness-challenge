@@ -58,19 +58,18 @@ module.exports.selectUserByUsername = (data, callback) => {
 //////////////////////////////////////////////////////
 module.exports.selectUserByUsernameOrEmail = (data, callback) => {
     const SQLSTATEMENT = `
-        SELECT * FROM User
+        SELECT id FROM User
         WHERE username = ? OR email = ?;
     `;
-
     const VALUES = [data.username, data.email];
     pool.query(SQLSTATEMENT, VALUES, callback);
 }
 
 module.exports.insertNewUser = (data, callback) => {
     const SQLSTATEMENT = `
-    INSERT INTO User (username, email, password) 
-    VALUES (?, ?, ?);
-    `
+        INSERT INTO User (username, email, password, skill_points, experience_points, level) 
+        VALUES (?, ?, ?, 0, 0, 1);
+    `;
     const VALUES = [data.username, data.email, data.password];
     pool.query(SQLSTATEMENT, VALUES, callback);
 }

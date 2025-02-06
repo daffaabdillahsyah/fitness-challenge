@@ -47,6 +47,7 @@ bcrypt.hash("password123", saltRounds, (error, hash) => {
         id INT PRIMARY KEY AUTO_INCREMENT,
         title VARCHAR(100) NOT NULL,
         description TEXT,
+        imageUrl TEXT,
         points INT DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
@@ -56,6 +57,7 @@ bcrypt.hash("password123", saltRounds, (error, hash) => {
         id INT PRIMARY KEY AUTO_INCREMENT,
         title VARCHAR(100) NOT NULL,
         description TEXT,
+        imageUrl TEXT,
         points INT DEFAULT 0,
         difficulty ENUM('easy', 'medium', 'hard') DEFAULT 'easy',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -137,22 +139,22 @@ bcrypt.hash("password123", saltRounds, (error, hash) => {
         ('Champion Trophy', 'Awarded for exceptional achievement', 'trophy');
 
       -- Insert some sample challenges
-      INSERT INTO Challenge (title, description, points) VALUES
-        ('10k Steps Challenge', 'Walk 10,000 steps daily for 7 days\nImage: https://images.unsplash.com/photo-1476480862126-209bfaa8edc8', 100),
-        ('Marathon Training', 'Complete a full marathon training program\nImage: https://images.unsplash.com/photo-1461896836934-ffe607ba8211', 500),
-        ('30 Days Yoga Journey', 'Practice yoga daily for 30 days\nImage: https://images.unsplash.com/photo-1544367567-0f2fcb009e0b', 300),
-        ('Strength Training Master', 'Complete 20 strength training sessions\nImage: https://images.unsplash.com/photo-1534438327276-14e5300c3a48', 400),
-        ('Swimming Pro', 'Swim 20 laps daily for 15 days\nImage: https://images.unsplash.com/photo-1530549387789-4c1017266635', 350),
-        ('Cycling Adventure', 'Complete a 50km cycling journey\nImage: https://images.unsplash.com/photo-1541625602330-2277a4c46182', 250);
+      INSERT INTO Challenge (title, description, imageUrl, points) VALUES
+        ('10k Steps Challenge', 'Walk 10,000 steps daily for 7 days', 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8', 100),
+        ('Marathon Training', 'Complete a full marathon training program', 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211', 500),
+        ('30 Days Yoga Journey', 'Practice yoga daily for 30 days', 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b', 300),
+        ('Strength Training Master', 'Complete 20 strength training sessions', 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48', 400),
+        ('Swimming Pro', 'Swim 20 laps daily for 15 days', 'https://images.unsplash.com/photo-1530549387789-4c1017266635', 350),
+        ('Cycling Adventure', 'Complete a 50km cycling journey', 'https://images.unsplash.com/photo-1541625602330-2277a4c46182', 250);
 
       -- Insert some sample quests
-      INSERT INTO Quest (title, description, points, difficulty) VALUES
-        ('Beginner Workout', 'Complete a basic workout routine\nImage: https://images.unsplash.com/photo-1517836357463-d25dfeac3438', 50, 'easy'),
-        ('Marathon Prep', 'Prepare for an upcoming marathon\nImage: https://images.unsplash.com/photo-1461896836934-ffe607ba8211', 200, 'hard'),
-        ('Morning Yoga', 'Start your day with a peaceful yoga session\nImage: https://images.unsplash.com/photo-1544367567-0f2fcb009e0b', 75, 'easy'),
-        ('HIIT Training', 'Complete a high-intensity interval training session\nImage: https://images.unsplash.com/photo-1517838277536-f5f99be501cd', 150, 'medium'),
-        ('Meditation Session', 'Practice mindfulness for 30 minutes\nImage: https://images.unsplash.com/photo-1506126613408-eca07ce68773', 50, 'easy'),
-        ('Mountain Hiking', 'Complete a challenging mountain trail\nImage: https://images.unsplash.com/photo-1551632811-561732d1e306', 180, 'hard');
+      INSERT INTO Quest (title, description, imageUrl, points, difficulty) VALUES
+        ('Beginner Workout', 'Complete a basic workout routine', 'https://images.unsplash.com/photo-1517836357463-d25dfeac3438', 50, 'easy'),
+        ('Marathon Prep', 'Prepare for an upcoming marathon', 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211', 200, 'hard'),
+        ('Morning Yoga', 'Start your day with a peaceful yoga session', 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b', 75, 'easy'),
+        ('HIIT Training', 'Complete a high-intensity interval training session', 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd', 150, 'medium'),
+        ('Meditation Session', 'Practice mindfulness for 30 minutes', 'https://images.unsplash.com/photo-1506126613408-eca07ce68773', 50, 'easy'),
+        ('Mountain Hiking', 'Complete a challenging mountain trail', 'https://images.unsplash.com/photo-1551632811-561732d1e306', 180, 'hard');
     `;
 
     pool.query(SQLSTATEMENT, callback);

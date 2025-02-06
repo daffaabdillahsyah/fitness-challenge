@@ -148,7 +148,12 @@
 
     <!-- Main Content -->
     <div class="container mt-4">
-        <h2 class="text-center mb-4">Available Quests</h2>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">Fitness Quests</h2>
+            <button class="btn btn-primary d-none" id="createQuestBtn" data-bs-toggle="modal" data-bs-target="#createQuestModal">
+                <i class="fas fa-plus"></i> Create Quest
+            </button>
+        </div>
 
         <!-- Quests Grid -->
         <div class="row" id="questsContainer">
@@ -247,6 +252,91 @@
                             <button class="btn btn-primary start-quest" data-quest-id="6">Start Quest</button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Quest Modal -->
+    <div class="modal fade" id="createQuestModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Create New Quest</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createQuestForm">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="imageUrl" class="form-label">Image URL</label>
+                            <input type="url" class="form-control" id="imageUrl" name="imageUrl" placeholder="https://example.com/image.jpg">
+                            <small class="text-muted">Enter a valid image URL (e.g., from Google Images)</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="points" class="form-label">Points</label>
+                            <input type="number" class="form-control" id="points" name="points" required min="1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="difficulty" class="form-label">Difficulty</label>
+                            <select class="form-control" id="difficulty" name="difficulty" required>
+                                <option value="easy">Easy</option>
+                                <option value="medium">Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Quest</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Quest Modal -->
+    <div class="modal fade" id="editQuestModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Quest</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editQuestForm">
+                        <input type="hidden" id="editQuestId" name="questId">
+                        <div class="mb-3">
+                            <label for="editTitle" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="editTitle" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="editDescription" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editImageUrl" class="form-label">Image URL</label>
+                            <input type="url" class="form-control" id="editImageUrl" name="imageUrl" placeholder="https://example.com/image.jpg">
+                            <small class="text-muted">Enter a valid image URL (e.g., from Google Images)</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editPoints" class="form-label">Points</label>
+                            <input type="number" class="form-control" id="editPoints" name="points" required min="1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDifficulty" class="form-label">Difficulty</label>
+                            <select class="form-control" id="editDifficulty" name="difficulty" required>
+                                <option value="easy">Easy</option>
+                                <option value="medium">Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Quest</button>
+                    </form>
                 </div>
             </div>
         </div>

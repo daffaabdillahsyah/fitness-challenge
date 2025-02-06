@@ -19,7 +19,22 @@ document.addEventListener('DOMContentLoaded', function() {
             const input = this.parentElement.querySelector('.item-quantity');
             const itemId = input.getAttribute('data-item-id');
             const currentValue = parseInt(input.value);
-            updateItemQuantity(itemId, currentValue + 1);
+            
+            // First check if user has enough experience points
+            fetchMethod(`${currentUrl}/api/user/profile`, (status, profileResponse) => {
+                if (status === 200) {
+                    const currentExp = profileResponse.experience_points;
+                    const requiredExp = 50; // 50 XP per item
+
+                    if (currentExp < requiredExp) {
+                        showMessage(`Not enough experience points. You need ${requiredExp} XP to add this item. Current XP: ${currentExp}`, "warning");
+                        return;
+                    }
+
+                    // If user has enough XP, proceed with adding item
+                    updateItemQuantity(itemId, currentValue + 1);
+                }
+            }, "GET", null, token);
         });
     });
 
@@ -46,6 +61,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (status === 200) {
                     const input = document.querySelector(`[data-item-id="${itemId}"]`);
                     if (input) input.value = newQuantity;
+                    
+                    // Update experience points display
+                    if (response.newExperience !== undefined) {
+                        const xpElement = document.getElementById('xp');
+                        if (xpElement) {
+                            xpElement.textContent = `${response.newExperience} XP`;
+                        }
+                        showMessage(`Item quantity updated. -${response.experienceDeducted} XP`, "success");
+                    }
+                    
+                    loadInventory(); // Reload to reflect changes
                 } else {
                     showMessage(response.message || "Error updating quantity", "error");
                 }
@@ -77,6 +103,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                             <input type="text" class="form-control text-center item-quantity" value="${item.quantity}" data-item-id="${item.id}" readonly>
                                             <button class="btn btn-outline-secondary increase-quantity" type="button">+</button>
                                         </div>
+                                    </div>
+                                    <div class="mt-2 text-muted small">
+                                        <i class="fas fa-info-circle"></i> Adding 1 item costs 50 XP
                                     </div>
                                 </div>
                             </div>

@@ -15,6 +15,42 @@ module.exports.getAllQuests = (callback) => {
 }
 
 //////////////////////////////////////////////////////
+// CREATE QUEST
+//////////////////////////////////////////////////////
+module.exports.createQuest = (data, callback) => {
+    const SQLSTATEMENT = `
+        INSERT INTO Quest (title, description, imageUrl, points, difficulty)
+        VALUES (?, ?, ?, ?, ?);
+    `;
+    const VALUES = [data.title, data.description, data.imageUrl, data.points, data.difficulty];
+    pool.query(SQLSTATEMENT, VALUES, callback);
+}
+
+//////////////////////////////////////////////////////
+// UPDATE QUEST
+//////////////////////////////////////////////////////
+module.exports.updateQuest = (data, callback) => {
+    const SQLSTATEMENT = `
+        UPDATE Quest
+        SET title = ?, description = ?, imageUrl = ?, points = ?, difficulty = ?
+        WHERE id = ?;
+    `;
+    const VALUES = [data.title, data.description, data.imageUrl, data.points, data.difficulty, data.id];
+    pool.query(SQLSTATEMENT, VALUES, callback);
+}
+
+//////////////////////////////////////////////////////
+// DELETE QUEST
+//////////////////////////////////////////////////////
+module.exports.deleteQuest = (questId, callback) => {
+    const SQLSTATEMENT = `
+        DELETE FROM Quest
+        WHERE id = ?;
+    `;
+    pool.query(SQLSTATEMENT, [questId], callback);
+}
+
+//////////////////////////////////////////////////////
 // GET USER QUESTS
 //////////////////////////////////////////////////////
 module.exports.getUserQuests = (userId, callback) => {
@@ -47,20 +83,15 @@ module.exports.startQuest = (data, callback) => {
 module.exports.getActiveQuests = (userId, callback) => {
     const SQLSTATEMENT = `
         SELECT Quest.*, UserQuest.status, UserQuest.created_at as started_at,
-               UserQuest.completed_at, Quest.difficulty as type
+               UserQuest.completed_at
         FROM Quest
         INNER JOIN UserQuest ON Quest.id = UserQuest.quest_id
-        WHERE UserQuest.user_id = ? 
-        AND UserQuest.status IN ('in_progress', 'completed')
-        ORDER BY 
-            CASE 
-                WHEN UserQuest.status = 'in_progress' THEN 1
-                WHEN UserQuest.status = 'completed' THEN 2
-            END,
-            UserQuest.created_at DESC;
+        WHERE UserQuest.user_id = ? AND UserQuest.status = 'in_progress'
+        ORDER BY UserQuest.created_at DESC;
     `;
+
     pool.query(SQLSTATEMENT, [userId], callback);
-};
+}
 
 //////////////////////////////////////////////////////
 // GET QUEST BY ID
@@ -77,7 +108,7 @@ module.exports.getQuestById = (questId, callback) => {
         }
         callback(null, results[0]);
     });
-};
+}
 
 //////////////////////////////////////////////////////
 // COMPLETE QUEST

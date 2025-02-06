@@ -10,17 +10,29 @@ const jwtMiddleware = require("../middlewares/jwtMiddleware");
 // DEFINE ROUTES
 //////////////////////////////////////////////////////
 
-// Get all quests (public)
+// Public routes (no authentication required)
 router.get("/", questController.getAllQuests);
 
 // Protected routes (require authentication)
 router.use(jwtMiddleware.verifyToken);
 
+// Get active quests (must be before /:id route)
+router.get("/active", questController.getActiveQuests);
+
+// Get quest by ID
+router.get("/:id", questController.getQuestById);
+
 // Get user's quests
 router.get("/user", questController.getUserQuests);
 
-// Get active quests
-router.get("/active", questController.getActiveQuests);
+// Create new quest
+router.post("/", questController.createQuest);
+
+// Update quest
+router.put("/:id", questController.updateQuest);
+
+// Delete quest
+router.delete("/:id", questController.deleteQuest);
 
 // Start a quest
 router.post("/:id/start", questController.startQuest);

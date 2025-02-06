@@ -121,6 +121,7 @@ module.exports.register = (req, res, next) => {
 
     const callback = (error, results, fields) => {
         if(error) {
+            console.error("Error in register:", error);
             return res.status(500).json({
                 message: "Internal server error."
             });
@@ -128,6 +129,7 @@ module.exports.register = (req, res, next) => {
         else {
             res.locals.message = `User ${data.username} created successfully.`
             res.locals.userId = results.insertId;
+            res.locals.username = data.username;
             next();
         }
     }
@@ -152,6 +154,7 @@ module.exports.checkUsernameOrEmailExist = (req, res, next) => {
 
     const callback = (error, results, fields) => {
         if(error) {
+            console.error("Error in checkUsernameOrEmailExist:", error);
             return res.status(500).json({
                 message: "Internal server error."
             });

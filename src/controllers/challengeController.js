@@ -17,6 +17,107 @@ module.exports.getAllChallenges = (req, res) => {
 };
 
 //////////////////////////////////////////////////////
+// GET CHALLENGE BY ID
+//////////////////////////////////////////////////////
+module.exports.getChallengeById = (req, res) => {
+    if (!req.params.id) {
+        return res.status(400).json({ message: "Challenge ID is required" });
+    }
+
+    challengeModel.getChallengeById(req.params.id, (error, challenge) => {
+        if (error) {
+            console.error("Error getting challenge:", error);
+            return res.status(500).json({ message: "Internal server error" });
+        }
+
+        if (!challenge) {
+            return res.status(404).json({ message: "Challenge not found" });
+        }
+
+        res.status(200).json(challenge);
+    });
+};
+
+//////////////////////////////////////////////////////
+// CREATE CHALLENGE
+//////////////////////////////////////////////////////
+module.exports.createChallenge = (req, res) => {
+    if (!req.body.title || !req.body.points) {
+        return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const data = {
+        title: req.body.title,
+        description: req.body.description,
+        imageUrl: req.body.imageUrl,
+        points: req.body.points
+    };
+
+    challengeModel.createChallenge(data, (error, results) => {
+        if (error) {
+            console.error("Error creating challenge:", error);
+            return res.status(500).json({ message: "Internal server error" });
+        }
+        res.status(201).json({
+            message: "Challenge created successfully",
+            challengeId: results.insertId
+        });
+    });
+};
+
+//////////////////////////////////////////////////////
+// UPDATE CHALLENGE
+//////////////////////////////////////////////////////
+module.exports.updateChallenge = (req, res) => {
+    if (!req.params.id || !req.body.title || !req.body.points) {
+        return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    const data = {
+        id: req.params.id,
+        title: req.body.title,
+        description: req.body.description,
+        imageUrl: req.body.imageUrl,
+        points: req.body.points
+    };
+
+    challengeModel.updateChallenge(data, (error, results) => {
+        if (error) {
+            console.error("Error updating challenge:", error);
+            return res.status(500).json({ message: "Internal server error" });
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ message: "Challenge not found" });
+        }
+
+        res.status(200).json({ message: "Challenge updated successfully" });
+    });
+};
+
+//////////////////////////////////////////////////////
+// DELETE CHALLENGE
+//////////////////////////////////////////////////////
+module.exports.deleteChallenge = (req, res) => {
+    if (!req.params.id) {
+        return res.status(400).json({ message: "Challenge ID is required" });
+    }
+
+    challengeModel.deleteChallenge(req.params.id, (error, results) => {
+        if (error) {
+            console.error("Error deleting challenge:", error);
+            return res.status(500).json({ message: "Internal server error" });
+        }
+
+        if (results.affectedRows === 0) {
+            return res.status(404).json({ message: "Challenge not found" });
+        }
+
+        res.status(200).json({ message: "Challenge deleted successfully" });
+    });
+};
+
+//////////////////////////////////////////////////////
 // JOIN CHALLENGE
 //////////////////////////////////////////////////////
 module.exports.joinChallenge = (req, res) => {

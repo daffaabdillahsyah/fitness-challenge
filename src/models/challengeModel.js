@@ -15,6 +15,42 @@ module.exports.getAllChallenges = (callback) => {
 }
 
 //////////////////////////////////////////////////////
+// CREATE CHALLENGE
+//////////////////////////////////////////////////////
+module.exports.createChallenge = (data, callback) => {
+    const SQLSTATEMENT = `
+        INSERT INTO Challenge (title, description, imageUrl, points)
+        VALUES (?, ?, ?, ?);
+    `;
+    const VALUES = [data.title, data.description, data.imageUrl, data.points];
+    pool.query(SQLSTATEMENT, VALUES, callback);
+}
+
+//////////////////////////////////////////////////////
+// UPDATE CHALLENGE
+//////////////////////////////////////////////////////
+module.exports.updateChallenge = (data, callback) => {
+    const SQLSTATEMENT = `
+        UPDATE Challenge
+        SET title = ?, description = ?, imageUrl = ?, points = ?
+        WHERE id = ?;
+    `;
+    const VALUES = [data.title, data.description, data.imageUrl, data.points, data.id];
+    pool.query(SQLSTATEMENT, VALUES, callback);
+}
+
+//////////////////////////////////////////////////////
+// DELETE CHALLENGE
+//////////////////////////////////////////////////////
+module.exports.deleteChallenge = (challengeId, callback) => {
+    const SQLSTATEMENT = `
+        DELETE FROM Challenge
+        WHERE id = ?;
+    `;
+    pool.query(SQLSTATEMENT, [challengeId], callback);
+}
+
+//////////////////////////////////////////////////////
 // JOIN CHALLENGE
 //////////////////////////////////////////////////////
 module.exports.joinChallenge = (data, callback) => {

@@ -77,4 +77,22 @@ module.exports.addInitialItems = (userId, callback) => {
         userId, userId, userId, userId
     ];
     pool.query(SQLSTATEMENT, VALUES, callback);
-} 
+}
+
+//////////////////////////////////////////////////////
+// GET USER INVENTORY ITEM
+//////////////////////////////////////////////////////
+module.exports.getUserInventoryItem = (userId, itemId, callback) => {
+    const SQLSTATEMENT = `
+        SELECT Item.*, UserItem.quantity
+        FROM Item
+        INNER JOIN UserItem ON Item.id = UserItem.item_id
+        WHERE UserItem.user_id = ? AND UserItem.item_id = ?;
+    `;
+    pool.query(SQLSTATEMENT, [userId, itemId], (error, results) => {
+        if (error) {
+            return callback(error);
+        }
+        callback(null, results[0]);
+    });
+}; 
